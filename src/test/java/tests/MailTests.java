@@ -17,38 +17,36 @@ import static utils.RandomUtils.getRandomString;
 
 
 public class MailTests extends TestBase{
+    private final String url = "https://account.mail.ru/";
+
+    private final String userName1 = "kristina71-00";
+    private final String userPassword1 = "obYRtaMPp34*";
+
+    private final String userName2 = "kristina71-11";
+    private final String userPassword2 = "obYRtaMPp34*";
 
     @Test
     @DisplayName("Login and check userName")
     public void UIAuthMailTest(){
-        final String url = "https://account.mail.ru/";
         open(url);
         LoginWidget loginWidget= new LoginPage().getLoginWidget();
-
-        final String userName="kristina71-00";
-        final String userPassword="obYRtaMPp34*";
-
-        LoginHelper.signIn(userName,userPassword,loginWidget);
+        LoginHelper.signIn(userName1,userPassword1,loginWidget);
 
         ProfileWidget profileWidget= new MailPage().getProfileWidget();
-        profileWidget.checkName(userName);
+        profileWidget.checkName(userName1);
     }
 
     @Test
     @DisplayName("Send message")
     public void UIMailSendMessageTest() {
-        final String url = "https://account.mail.ru/";
         open(url);
         LoginWidget loginWidget = new LoginPage().getLoginWidget();
 
-        final String userName = "kristina71-00";
-        final String userPassword = "obYRtaMPp34*";
-
-        LoginHelper.signIn(userName,userPassword,loginWidget);
+        LoginHelper.signIn(userName1,userPassword1,loginWidget);
 
         ComposePopupWidget composePopupWidget= new MailPage().getComposeWidget().clickComposeBtn();
 
-        final String sendTo = "ezikova2018@yandex.ru";
+        final String sendTo = String.format("%s@mail.ru",userName1);
         final String subject =getRandomString(10);
         final String message =getRandomMessage(10,20);
 
@@ -61,15 +59,8 @@ public class MailTests extends TestBase{
     @Test
     @DisplayName("Send message and check letter")
     public void UIMailSendMessageAndCheckLetterTest() {
-        final String url = "https://account.mail.ru/";
         open(url);
         LoginWidget loginWidget = new LoginPage().getLoginWidget();
-
-        final String userName1 = "kristina71-00";
-        final String userPassword1 = "obYRtaMPp34*";
-
-        final String userName2 = "kristina71-11";
-        final String userPassword2 = "obYRtaMPp34*";
 
         LoginHelper.signIn(userName1,userPassword1,loginWidget);
 
@@ -104,15 +95,8 @@ public class MailTests extends TestBase{
     @Test
     @DisplayName("Отправляем (UI) и получаем почту (API)")
     void sendUIReceiveApiMailTest() {
-        final String url = "https://account.mail.ru/";
         open(url);
         LoginWidget loginWidget = new LoginPage().getLoginWidget();
-
-        final String userName1 = "kristina71-00";
-        final String userPassword1 = "obYRtaMPp34*";
-
-        final String userName2 = "kristina71-11";
-        final String userPassword2 = "obYRtaMPp34*";
 
         LoginHelper.signIn(userName1,userPassword1,loginWidget);
 
@@ -131,7 +115,7 @@ public class MailTests extends TestBase{
         composePopupWidget.checkSuccessMessage(successText);
 
         //Не рабоает =(
-        new EmailUtils().verifyMailHasMessage(userName2+"@mail.ru", userPassword2, subject);
+        new EmailUtils().verifyMailHasMessage(sendTo, userPassword2, subject);
     }
 
 
@@ -141,15 +125,9 @@ public class MailTests extends TestBase{
     void sendApiAndReceiveApiMailTest() {
         String randomMessage = getRandomMessage(30, 60);
 
-        final String userName1 = "kristina71-00";
-        final String userPassword1 = "obYRtaMPp34*";
+        new EmailUtils().sendMail(String.format("%s@mail.ru",userName1), userPassword1, String.format("%s@mail.ru",userName2), "", randomMessage);
 
-        final String userName2 = "kristina71-11";
-        final String userPassword2 = "obYRtaMPp34*";
-
-        new EmailUtils().sendMail(userName1+"@mail.ru", userPassword1, userName2+"@mail.ru", "", randomMessage);
-
-        new EmailUtils().verifyMailHasMessage(userName2+"@mail.ru", userPassword2, randomMessage);
+        new EmailUtils().verifyMailHasMessage(String.format("%s@mail.ru",userName2), userPassword2, randomMessage);
 
     }
 }
