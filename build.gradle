@@ -1,5 +1,8 @@
 plugins {
     id 'java'
+    id 'java-library'
+    id 'application'
+    id 'io.qameta.allure' version '2.8.1'
 }
 
 group 'mail_tests'
@@ -8,7 +11,22 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
+    jcenter()
     mavenCentral()
+}
+
+ext {
+    allureVersion = '2.13.3'
+    junitVersion = '5.6.0'
+}
+
+allure {
+    version = "${allureVersion}"
+    autoconfigure = true
+    aspectjweaver = true
+    useJUnit5 {
+        version = "${allureVersion}"
+    }
 }
 
 test {
@@ -19,4 +37,11 @@ dependencies {
     testImplementation('com.codeborne:selenide:5.13.0')
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.2")
+    
+    testImplementation "io.qameta.allure:allure-selenide:${allureVersion}"
+    testImplementation 'ch.qos.logback:logback-classic:1.2.3'
+    testImplementation 'javax.mail:javax.mail-api:1.6.2'
+    testImplementation 'com.sun.mail:javax.mail:1.6.2'
+    testImplementation 'com.sun.mail:smtp:1.6.3'
+    testImplementation 'javax.activation:activation:1.1.1'
 }
