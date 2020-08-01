@@ -3,6 +3,8 @@ package tests;
 import elements.ComposePopupWidget;
 import elements.LoginWidget;
 import elements.ProfileWidget;
+import helpers.LoginHelper;
+import helpers.MailHelper;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -24,10 +26,7 @@ public class MailTests extends TestBase{
         final String userName="kristina71-00";
         final String userPassword="obYRtaMPp34*";
 
-        loginWidget.sendLogin(userName);
-        loginWidget.clickNextBtn();
-        loginWidget.sendPassword(userPassword);
-        loginWidget.signIn();
+        LoginHelper.signIn(userName,userPassword,loginWidget);
 
         ProfileWidget profileWidget= new MailPage().getProfileWidget();
         profileWidget.checkName(userName);
@@ -42,10 +41,7 @@ public class MailTests extends TestBase{
         final String userName = "kristina71-00";
         final String userPassword = "obYRtaMPp34*";
 
-        loginWidget.sendLogin(userName);
-        loginWidget.clickNextBtn();
-        loginWidget.sendPassword(userPassword);
-        loginWidget.signIn();
+        LoginHelper.signIn(userName,userPassword,loginWidget);
 
         ComposePopupWidget composePopupWidget= new MailPage().getComposeWidget().clickComposeBtn();
 
@@ -53,12 +49,50 @@ public class MailTests extends TestBase{
         final String subject =getRandomString(10);
         final String message =getRandomMessage(10,20);
 
-        composePopupWidget.setTo(sendTo);
-        composePopupWidget.setSubject(subject);
-        composePopupWidget.setMessage(message);
-        composePopupWidget.submit();
+        MailHelper.sendMail(sendTo,subject,message,composePopupWidget);
 
         final String successText="Письмо отправлено";
         composePopupWidget.checkSuccessMessage(successText);
+    }
+
+    @Test
+    public void UIMailSendMessageAndCheckLetterTest() {
+        final String url = "https://account.mail.ru/";
+        open(url);
+        LoginWidget loginWidget = new LoginPage().getLoginWidget();
+
+        final String userName1 = "kristina71-00";
+        final String userPassword1 = "obYRtaMPp34*";
+
+        final String userName2 = "kristina71-11";
+        final String userPassword2 = "obYRtaMPp34*";
+
+        LoginHelper.signIn(userName1,userPassword1,loginWidget);
+
+        ProfileWidget profileWidget= new MailPage().getProfileWidget();
+        profileWidget.checkName(userName1);
+
+        ComposePopupWidget composePopupWidget = new MailPage().getComposeWidget().clickComposeBtn();
+
+        final String sendTo = String.format("%s@mail.ru",userName2);
+        final String subject = getRandomString(10);
+        final String message = getRandomMessage(10, 20);
+
+        MailHelper.sendMail(sendTo,subject,message,composePopupWidget);
+
+        final String successText = "Письмо отправлено";
+        composePopupWidget.checkSuccessMessage(successText);
+
+        closeBrowser();
+
+        open(url);
+        LoginWidget loginWidget2 = new LoginPage().getLoginWidget();
+        LoginHelper.signIn(userName2,userPassword2,loginWidget2);
+
+        MailPage mailPage = new MailPage();
+        ProfileWidget profileWidget2= mailPage.getProfileWidget();
+        profileWidget2.checkName(userName2);
+
+        mailPage.getMessageWidget().findMessageBySubject(subject);
     }
 }

@@ -1,6 +1,7 @@
 package pages;
 
 import elements.ComposeWidget;
+import elements.MessageWidget;
 import elements.ProfileWidget;
 
 public class MailPage {
@@ -10,5 +11,9 @@ public class MailPage {
 
     public ComposeWidget getComposeWidget(){
         return new ComposeWidget();
+    }
+
+    public MessageWidget getMessageWidget(){
+        return new MessageWidget();
     }
 }
