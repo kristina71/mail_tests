@@ -117,7 +117,6 @@ public class MailTests extends TestBase {
     new EmailUtils().verifyMailHasMessage(sendTo, userPassword2, subject);
   }
 
-  // Не рабоает =(
   @Test
   @DisplayName("Отправляем (API) и получаем почту (API)")
   void sendApiAndReceiveApiMailTest() {

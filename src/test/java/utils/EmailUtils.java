@@ -19,8 +19,8 @@ public class EmailUtils {
 
   private static Logger logger = LoggerFactory.getLogger(EmailUtils.class);
 
-  String inboxHost = "pop.yandex.ru";
-  String outboxHost = "smtp.yandex.ru";
+  String inboxHost = "pop.mail.ru";
+  String outboxHost = "smtp.mail.ru";
 
   @Step("Проверка, что сообщение дошло")
   public void verifyMailHasMessage(String user, String password, String text) {
