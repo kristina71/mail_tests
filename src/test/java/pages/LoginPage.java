@@ -1,10 +1,9 @@
 package pages;
 
-
 import elements.LoginWidget;
 
 public class LoginPage {
-   public LoginWidget getLoginWidget(){
-       return new LoginWidget();
-   }
+  public LoginWidget getLoginWidget() {
+    return new LoginWidget();
+  }
 }

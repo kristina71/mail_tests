@@ -1,19 +1,19 @@
 package elements;
 
-import com.codeborne.selenide.SelenideElement;
-
 import static com.codeborne.selenide.Selenide.$;
+
+import com.codeborne.selenide.SelenideElement;
 
 public class ComposeWidget {
 
-    private final static String composeLocator=".compose-button";
+  private static final String composeLocator = ".compose-button";
 
-    private SelenideElement findComposeLocator(){
-            return $(composeLocator);
-        }
+  private SelenideElement findComposeLocator() {
+    return $(composeLocator);
+  }
 
-     public ComposePopupWidget clickComposeBtn(){
-        findComposeLocator().click();
-        return new ComposePopupWidget();
-    }
+  public ComposePopupWidget clickComposeBtn() {
+    findComposeLocator().click();
+    return new ComposePopupWidget();
+  }
 }

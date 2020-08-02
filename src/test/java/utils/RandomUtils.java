@@ -1,71 +1,104 @@
 package utils;
 
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.Timestamp;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import org.apache.commons.lang3.StringUtils;
 
 public class RandomUtils {
 
-    private static String emailDomain = "@jbtd.no";
+  private static String emailDomain = "@jbtd.no";
 
-    public static String getRandomString(int length) {
-        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        StringBuilder result = new StringBuilder();
-        Random rnd = new Random();
-        while (result.length() < length) {
-            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
-            result.append(SALTCHARS.charAt(index));
-        }
-
-        return result.toString();
+  public static String getRandomString(int length) {
+    String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+    StringBuilder result = new StringBuilder();
+    Random rnd = new Random();
+    while (result.length() < length) {
+      int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+      result.append(SALTCHARS.charAt(index));
     }
 
-    public static String getRandomMessage(int min, int max) {
-        String[] words = {"and", "or", "but", "because",
-                "red", "white", "Jane", "John", "Bobby",
-                "man", "woman", "fish", "elephant", "unicorn",
-                "a", "the", "every", "some", "any", "all",
-                "big", "tiny", "pretty", "bald", "small",
-                "runs", "jumps", "talks", "sleeps", "walks",
-                "loves", "hates", "sees", "knows", "looks for", "finds",
-                ", ", ", ", ", ", ". ", ". "};
+    return result.toString();
+  }
 
-        StringBuilder message = new StringBuilder();
-        int messageLength = getRandomInt(min, max);
-        while (message.length() < messageLength) {
-            int wordIndex = getRandomInt(0, words.length -1);
-            message.append(words[wordIndex] + " ");
-        }
+  public static String getRandomMessage(int min, int max) {
+    String[] words = {
+      "and",
+      "or",
+      "but",
+      "because",
+      "red",
+      "white",
+      "Jane",
+      "John",
+      "Bobby",
+      "man",
+      "woman",
+      "fish",
+      "elephant",
+      "unicorn",
+      "a",
+      "the",
+      "every",
+      "some",
+      "any",
+      "all",
+      "big",
+      "tiny",
+      "pretty",
+      "bald",
+      "small",
+      "runs",
+      "jumps",
+      "talks",
+      "sleeps",
+      "walks",
+      "loves",
+      "hates",
+      "sees",
+      "knows",
+      "looks for",
+      "finds",
+      ", ",
+      ", ",
+      ", ",
+      ". ",
+      ". "
+    };
 
-        String readyMessage = StringUtils.capitalize(message.toString())
-                .replace("  ", " ")
-                .replace(" ,", ",")
-                .replace(" .", ".").trim();
-
-        return readyMessage;
+    StringBuilder message = new StringBuilder();
+    int messageLength = getRandomInt(min, max);
+    while (message.length() < messageLength) {
+      int wordIndex = getRandomInt(0, words.length - 1);
+      message.append(words[wordIndex] + " ");
     }
 
-    public static int getRandomInt(int min, int max) {
-        Random r = new Random();
+    String readyMessage =
+        StringUtils.capitalize(message.toString())
+            .replace("  ", " ")
+            .replace(" ,", ",")
+            .replace(" .", ".")
+            .trim();
 
-        return r.nextInt((max - min) + 1) + min;
-    }
+    return readyMessage;
+  }
 
-    public static String getRandomPhone() {
-        return getRandomLong(11111111111111111L, 99999999999999999L) + "";
-    }
+  public static int getRandomInt(int min, int max) {
+    Random r = new Random();
 
-    public static Long getRandomLong(Long min, Long max) {
-        return ThreadLocalRandom.current().nextLong(min, max);
-    }
+    return r.nextInt((max - min) + 1) + min;
+  }
 
-    public static String getRandomEmail() {
-        long timestamp = new Timestamp(System.currentTimeMillis()).getTime();
-        return getRandomString(5) + timestamp + emailDomain;
-    }
+  public static String getRandomPhone() {
+    return getRandomLong(11111111111111111L, 99999999999999999L) + "";
+  }
 
+  public static Long getRandomLong(Long min, Long max) {
+    return ThreadLocalRandom.current().nextLong(min, max);
+  }
+
+  public static String getRandomEmail() {
+    long timestamp = new Timestamp(System.currentTimeMillis()).getTime();
+    return getRandomString(5) + timestamp + emailDomain;
+  }
 }
